@@ -1,31 +1,31 @@
 ﻿id_carpeta,nombre_original,nombre_normalizado
-m_f_01,m_f,m_f
-a_g_02,a_g,a_g
-b_a_03,b_a,b_a
-j_a_04,j_a,j_a
-g_e_05,g_e,g_e
-j_g_06,j_g,j_g
-n_c_07,n_c,n_c
-c_v_08,c_v,c_v
-f_g_09,f_g,f_g
-f_v_10,f_v,f_v
-s_g_11,s_g,s_g
-i_h_12,i_h,i_h
-m_g_13,m_g,m_g
-j_g_14,j_g,j_g
-t_g_15,t_g,t_g
-b_f_16,b_f,b_f
-m_f_17,m_f,m_f
-v_m_18,v_m,v_m
-m_g_19,m_g,m_g
-m_c_20,m_c,m_c
-d_g_21,d_g,d_g
-m_v_22,m_v,m_v
-g_r_23,g_r,g_r
-m_e_24,m_e,m_e
-e_v_25,e_v,e_v
-z_h_26,z_h,z_h
-y_f_27,y_f,y_f
-z_z_28,z_z,z_z
-c_a_29,c_a,c_a
-e_r_30,e_r,e_r
+mf_01,Matias Figueroa,matias_figueroa
+ag_02,Aracely Garrido,aracely_garrido
+ba_03,Bladimir Aguilera,bladimir_aguilera
+ja_04,Julio Alcantara,julio_alcantara
+ge_05,Gustavo Espinosa,gustavo_espinosa
+jg_06,Javier Montupil,javier_montupil
+nc_07,Nicolas Cuevas,nicolas_cuevas
+cv_08,Carlos Vazquez,carlos_vazquez
+fg_09,Francisco Gutierrez,francisco_gutierrez
+fv_10,Fabian Verasay,fabian_verasay
+sg_11,Sergio Garrido,sergio_garrido
+ih_12,Irriana Herrera,irriana_herrera
+mg_13,Maximiliano Garrido,maximiliano_garrido
+jg_14,Joselo Garrido,joselo_garrido
+tg_15,Tomas Garrido,tomas_garrido
+bf_16,Benjamin Flores,benjamin_flores
+mf_17,Michelle Ferraro,michelle_ferraro
+vm_18,Victor Medina,victor_medina
+mg_19,Manuel Garrido,manuel_garrido
+mc_20,Moises Castillo,moises_castillo
+dg_21,Daira Guerra,daira_guerra
+mv_22,Marcela Vera,marcela_vera
+gr_23,Giselle Rojas,giselle_rojas
+me_24,Matias Escalante,matias_escalante
+ev_25,Elias Esveile,elias_esveile
+zh_26,Zoe Herrera,zoe_herrera
+yf_27,Yamila Fernandez,yamila_fernandez
+zz_28,Zaira Zuviria,zaira_zuviria
+ca_29,Camila Alves,camila_alves
+er_30,Eliza Ramirez,eliza_ramirez
