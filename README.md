@@ -1,93 +1,71 @@
-# DataOps: Ingesta Colaborativa de Dataset para Visión Artificial
+# 📸 Manual de Integración - DataOps (Rama `integracion`)
 
-Este repositorio contiene la arquitectura para la recolección de imágenes utilizando Git (código) y DVC (datos), conectados a Google Drive. Cada estudiante recolectará datos de entre 5 y 30 personas distintas (aproximadamente 10 fotos por persona).
+Actualmente, esta rama contiene nuestro **Producto Mínimo Viable (MVP)**: un dataset base funcional con más de 30 sujetos y 300 imágenes. 
 
-## Pre-requisitos
-- Python 3.10 o superior.
-- Cuenta en GitHub y Git instalado en tu equipo.
-- ID de Cliente y Secreto de Cliente de GCP (entregados por el profesor).
+**Tu misión como Integrador:** Descargar los Pull Requests (PR) pendientes, auditarlos, resolver los conflictos de fusión y añadirlos a este dataset unificado.
 
 ---
 
-## Paso 1: Fork y Configuración del Entorno
+## 🚨 Control de Calidad: Errores Frecuentes
 
-Debes trabajar en tu propia copia del repositorio para luego proponer los cambios.
+Antes de aceptar un PR, revisa estos 3 problemas comunes:
 
-1. Ve a la página del repositorio en GitHub y haz clic en el botón **"Fork"** (esquina superior derecha).
-2. Abre tu terminal y clona **tu copia** (reemplaza `TU_USUARIO` por tu usuario de GitHub):
-```bash
-git clone [https://github.com/TU_USUARIO/proyecto-dataset-vision.git](https://github.com/TU_USUARIO/proyecto-dataset-vision.git)
-cd proyecto-dataset-vision
-```
-
-3. Crea y activa un entorno virtual. En Windows (CMD/PowerShell):
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-```
-*(En Mac/Linux usa `python3 -m venv .venv` y `source .venv/bin/activate`)*
-
-4. Instala las dependencias:
-```bash
-pip install -r requirements.txt
-pip install --upgrade pyOpenSSL cryptography
-```
+1. **Choque de Iniciales (Intersecciones):** Si el PR trae a un sujeto llamado "Michelle Ferraro" (`mf_01`), pero en nuestro dataset ya existe "Matías Figueroa" (`mf_01`), debes cambiar el ID del nuevo a `mf_02` en el CSV y renombrar su carpeta de fotos.
+2. **Columnas Invertidas o Mal Formateadas:** Revisa el `sujetos.csv`. El orden estricto debe ser: `id_carpeta,nombre_normalizado,nombre_original` (separado por comas, sin espacios después de la coma).
+3. **Imágenes Huérfanas:** Revisa que en `data/images/` no haya fotos sueltas. Todas deben estar dentro de la carpeta de su respectivo sujeto.
 
 ---
 
-## Paso 2: Autenticación y Descarga de DVC (Pull)
+## 🛠️ Apuntes del Tech Lead: Flujo de Trabajo
 
-1. Configura las credenciales locales para Google Drive:
-```bash
-dvc remote modify --local almacenamiento gdrive_client_id "ID_DEL_PROFESOR"
-dvc remote modify --local almacenamiento gdrive_client_secret "SECRETO_DEL_PROFESOR"
-```
+Usa esta guía de comandos para evaluar cada Pull Request paso a paso. *(Reemplaza `NUMERO` por el ID del PR que vas a revisar)*.
 
-2. Descarga el dataset base:
+### 1. Preparar y Descargar
 ```bash
+source .venv/bin/activate
+git checkout main
+git fetch origin pull/NUMERO/head:revision_pr_NUMERO
+git checkout revision_pr_NUMERO
 dvc pull
 ```
-*Nota: Se abrirá tu navegador. Inicia sesión con la cuenta correspondiente, haz clic en Configuración Avanzada y acepta los permisos.*
+
+### 2. Inspección Visual
+Revisa en tu editor de código:
+- `sujetos.csv`
+- `data/images`
 
 ---
 
-## Paso 3: Aportar tus Imágenes (La Estructura)
+### 3. Decisión y Ejecución
 
-Las imágenes y sus registros deben seguir una nomenclatura estricta para integrarse correctamente al conjunto de datos principal.
-
-1. **Estructura de carpetas e imágenes:**
-   - Ve a la ruta `data/images/`.
-   - Crea una subcarpeta por cada sujeto fotografiado directamente en `images/`. El nombre de la carpeta (`id_carpeta`) debe estar formado por las iniciales del sujeto fotografiado, seguidas de `_01`. (Ejemplo: Para un sujeto llamado Carlos Gómez, la carpeta será `cg_01`).
-   - *Nota:* Revisa las carpetas existentes. Si ya existe una carpeta con las mismas iniciales (ej. `cg_01`), utiliza el número correlativo siguiente para tu sujeto (`cg_02`).
-   - Pega las fotos en la subcarpeta del sujeto correspondiente. Nombra cada imagen con el ID de la carpeta y un correlativo (ejemplo: `cg_01_01.jpg`, `cg_01_02.jpg`). 
-   - Formatos permitidos: `.jpg`, `.jpeg` o `.png`.
-
-2. **Registro de metadatos en el CSV:**
-   - Abre el archivo **`sujetos.csv`** existente en el repositorio.
-   - Ve al final del documento y agrega una fila nueva por cada sujeto fotografiado.
-   - Los datos deben ir separados por comas (`,`), sin espacios adicionales.
-   - Formato de las columnas: `id_carpeta,nombre_normalizado,nombre_original`
-   - Ejemplo de fila: `cg_01,carlos_gomez,Carlos Gomez`
-
----
-
-## Paso 4: Subir los datos (Push y Pull Request)
-
-1. **Registra las imágenes en DVC y súbelas a Drive:**
+#### CAMINO A: Tiene errores (Rechazar y Limpiar)
+Si la estructura está mal o fallan las imágenes, avisa en GitHub y limpia tu entorno local:
 ```bash
+git checkout main
+git clean -fd
+git branch -D revision_pr_NUMERO
+```
+
+#### CAMINO B: Perfecto (Integrar a la recolección)
+Si todo está correcto, fusiónalo en nuestra rama de integración. **Aparecerán conflictos en el CSV y en DVC, es normal.**
+
+```bash
+# 1. Traer los datos a la rama de integración
+git checkout integracion
+git merge revision_pr_NUMERO
+
+# 2. RESOLVER EL CSV MANUALMENTE
+# (Abre sujetos.csv, borra las marcas de conflicto y ordena las filas)
+
+# 3. RESOLVER DVC (Recalcular imágenes)
+rm data/images.dvc
 dvc add data/images
-dvc push
-```
-*(Este paso actualizará automáticamente el archivo de rastreo `data/images.dvc`)*
 
-2. **Guarda los registros en Git y súbelos a tu Fork:**
-```bash
-git add data/images.dvc sujetos.csv
-git commit -m "Agrega imágenes y metadatos de nuevos sujetos"
-git push origin main
-```
+# 4. Sellar la integración y subir a la nube
+git add sujetos.csv data/images.dvc
+git commit -m "Integra PR NUMERO a la recoleccion"
+git push origin integracion
 
-3. **Envía tu trabajo para revisión:**
-   - Ve a tu cuenta de GitHub (a tu Fork).
-   - Haz clic en el botón **"Contribute"** y luego en **"Open pull request"**.
-   - Envía la solicitud para que el profesor revise e integre tu aporte al repositorio oficial.
+# 5. Limpiar el entorno
+git branch -D revision_pr_NUMERO
+```
